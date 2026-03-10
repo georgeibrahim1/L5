@@ -5,7 +5,7 @@ function setup()
   windowTitle("beginShape(POINTS) example")
   
   fill(0)
-  beginShape()
+  beginShape(POINTS)
   for i=0,10 do
     vertex(random(width),random(height))
   end
