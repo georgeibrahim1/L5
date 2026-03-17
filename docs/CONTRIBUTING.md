@@ -6,7 +6,7 @@ Please be sure to review our [principles](https://github.com/L5lua/L5/blob/main/
 
 Check out the [contributor docs](https://l5lua.org/contributing/) for more in-depth details about contributing code, bug fixes, and documentation.
 
-## Contributor Guidelines (key points)
+## Contributor Guidelines
 
 The following are some key points to keep in mind when contributing to L5:
 
@@ -60,8 +60,6 @@ If you want to work/contribute to L5 codebase as a developer, you can follow the
 
 7. As you start making changes to the codebase, it is preferred that you aim to [commit](https://docs.github.com/en/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/about-commits) early and often rather than lump multiple big changes into one commit. A good guideline is to commit whenever you have completed a subtask that can be described in a sentence.
 
-Here is how you do that:
-
 - Stage all changes for committing into git with the following command.
 
 ```
@@ -74,11 +72,18 @@ git add .
 git commit -m "[your_commit_message]"
 ```
 
-`[your_commit_message]` should be replaced with a relevant commit message that is descriptive of the changes, avoiding generic statements. For example, instead of saying `Documentation fix 1`, say `Add documentation example to circle() function`.
-
-Repeat the above steps for all commits you will be making while making sure to run `npm test` periodically to make sure things are working.
-
 8. Once done, you can push the changes and create a [pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request).
+
+## Codebase overview
+
+Some of the key files and folders you will see in the L5 folder are as follows:
+
+- `L5.lua` - Where all the code for L5 lives
+- `main.lua` - This is the main entry point for the L5 library ran by Love2D
+- `examples` - This is where you can find example L5 projects
+- `docs` - Where the documentation lives
+
+The other files and folders are either assets or other kinds of support files; in most cases, you shouldn't need to make any modifications.
 
 ## AI Usage Policy
 This project does *not* accept fully AI-generated contributions. AI tools may be used assistively only. As a contributor, you should be able to understand and take responsibility for changes you make to the codebase.
