@@ -1,34 +1,30 @@
-Hi there! Welcome to L5 contributing! Here are a few things to know:
+# Contributing
 
-The GitHub issues are for bugs and feature requests for the L5 library itself. If you have a general question or bug programming with L5 please post it in the [L5 forum](https://discourse.processing.org/c/l5/)
+Welcome to L5 contributing. 
 
-Please be sure to review our [principles](https://github.com/L5lua/L5/blob/main/docs/PRINCIPLES.md). These things are very important to us.
+**This is the place to learn about contributing to the L5 library codebase itself**. There is a broader overview on [contributing on L5's website](https://l5lua.org/contributing/). If you're looking to contribute to the website (for example, with the reference, fixing typos, or adding in a tutorial), its code lives in a separate repository at [L5lua/L5-website](https://github.com/L5lua/L5-website). This repository is strictly for the core library.
 
-Check out the [contributor docs](https://l5lua.org/contributing/) for more in-depth details about contributing code, bug fixes, and documentation.
+The GitHub issues are for bugs and feature requests for the L5 library itself. If you have a general question or need help writing your own programs with L5 please post in the [L5 forum](https://discourse.processing.org/c/l5/).
 
-If you're looking to contribute to the website, it's code lives in a separate repository at [L5lua/L5-webiste](https://github.com/L5lua/L5-website). This repository is strictly for the core library.
+Please be sure to review our principles (TODO: Add principles!)
 
-## Contributor Guidelines
+## Contributor Guidelines for the L5 library
 
-The following are some key points to keep in mind when contributing to L5:
+This section is adapted from the [p5.js contributor guidlines](https://github.com/processing/p5.js/blob/main/contributor_docs/contributor_guidelines.md).
+
+*Issues* are usually bug reports or feature requests. A *pull request* is often the result of working to address an issue. It's an official request to the official L5 codebase to pull or merge changes from another repo (in this case, your forked L5 repo where you worked on fixing a bug listed in an issue, for example).
+
+### Please create an issue prior to a pull request
+
+You should file an [issue](https://github.com/l5lua/l5/issues) prior to a pull request. This will allow us to discuss possible implementation details and give feedback.
 
 ### Get Assigned Before Working on an Issue
-You should not “jump the queue” by filing a PR for an issue that either someone else has indicated willingness to submit a contribution or has already been assigned to someone else. We will always prioritize the “first assigned, first serve” order for accepting code contributions for an issue. If you file a PR for an issue while someone else is still working on the same issue, your PR will likely be closed.
 
-### You may follow up on Stalled Issues
+You should not "jump the queue" by filing a pull request for an issue that someone else has recently indicated willingness to submit a contribution to or has already been assigned to someone else. We will prioritize the "first assigned, first serve" order for accepting code contributions for an issue. 
+
+### But you may follow up on Stalled Issues
+
 If you see that it has been a few weeks since the last activity on an issue with an assigned individual, you can leave a polite comment on the issue asking for progress and if they need help with the implementation. We generally allow for people to work on their contributions at their own pace, as we understand that most people will often be working on a volunteer basis, or it simply takes more time for them to work on the feature.
-
-### Only Issues Approved for Implementation May Be Worked On
-You should not file a pull request (or start working on code changes) without a corresponding issue or before an issue has been approved for implementation, that is because there is no guarantee that the proposal will be accepted. Any pull requests filed before a proposal has been approved will be closed until approval is given to the issue.
-
-<!--### Include Unit Tests
-Add any unit tests if you are working on adding new features or feature enhancement. Frequently run `npm test` and make sure all existing and new tests pass before submitting a PR.
-
-### Follow Code Standards
-Make sure your code follows the established code standards for L5. Any git commit and pull request must pass linting before it will be accepted. The easiest way for you to follow the right coding standard is to use the ESLint plugin available for your text editor with linting error highlighting (available for most popular text editors).-->
-
-### Preparing Pull Requests
-A pull request, more formally, is a request to a repo (in this case, the official L5 repo) to pull or merge changes from another repo (in this case, your forked L5 repo) into its commit history.
 
 ## Quickstart
 
@@ -78,49 +74,48 @@ git commit -m "[your_commit_message]"
 
 ## Codebase overview
 
-A little familiarity with Love2D goes a long way in understanding how L5 works. They have a great [wiki](www.love2d.org/wiki/Getting_Started) you can refer to for more details.
-L5, overrides some of Love2D's default functions like `love.run()` and `love.draw()` to take control of the rendering loop and state to provide a Processing-style api.
+L5 is built with the Love2d framework underlying its codebase. A little familiarity with Love2D goes a long way in understanding how L5 works. They have a great [wiki](www.love2d.org/wiki/Getting_Started) you can refer to for more details. L5 overrides some of Love2D's default functions like `love.run()` and `love.draw()` to take control of the rendering loop and state to provide a Processing/p5-style API and approach. This allows us to do things like allow drawing graphics inside events such as mousePressed(), keyPressed() or even setup() - which would not normally be possible in Love2d.
 
 Almost all internal state is stored inside a `L5_env` table that the library needs such as:
 
-- current color mode
-- whether looping is enabled
-- pressed keys
-- mouse movement flags
-- current font info
+* current color mode
+* whether looping is enabled
+* pressed keys
+* mouse movement flags
+* current font info
 
-L5 is does its drawing through a back buffer canvas which means:
+L5 does its drawing through a back buffer canvas which means:
 
-- draw onto an offscreen image first
-- then draw that image to the screen
+* draw onto an offscreen image first
+* then draw that image to the screen
 
 This is a common graphics technique called [**double buffering**](https://en.wikipedia.org/wiki/Double_buffering).
 
-This library is intentionally “global” and beginner-friendly. This is one of the most important things to understand when reading the codebase.
+This library is intentionally "global" and beginner-friendly. This is one of the most important things to understand when reading the codebase.
 
 In many Lua codebases, you’ll see a style like:
 
-- `local M = {}`
-- `function M.foo() ... end`
-- `return M`
+```
+local M = {}
+function M.foo() ... end
+return M
+```
 
 Then users do:
 
-- `local lib = require("lib")`
-- `lib.foo()`
+```
+local lib = require("lib")
+lib.foo()
+```
 
-That is **not** the style here. L5 is more like Processing or p5 global mode:
+That is **not** the style here. L5 applies a Processing/p5 approach with defined global variables accessible to the user, simplified function calling, supporting the ability to do *code sketching* with fewer lines of code.
 
-- define globals
-- provide simple function names
-- let the user write very short sketches
+Some key files and folders in a L5 folder:
 
-Some of the key files and folders you will see in the L5 folder are as follows:
-
-- `L5.lua` - The main library that contains all the code for L5
-- `main.lua` - This is the main entry point / runnable sketch used by Love2D
-- `examples` - This is where you can find example L5 projects
-- `docs` - This is where the documentation lives
+* `L5.lua` - The main library that contains all the code for L5
+* `main.lua` - This is your code sketch file, instead of (for example) p5.js's sketch.js
+* `examples` - This is where you can find example L5 projects
+* `docs` - This is where the documentation lives
 
 The other files and folders are either assets or other kinds of support files; in most cases, you shouldn't need to make any modifications.
 
@@ -129,11 +124,11 @@ The other files and folders are either assets or other kinds of support files; i
 1. Open one of the files in `L5/examples/`
 2. Copy its contents
 3. Paste it into the root `L5/main.lua`
-4. Run the project with LÖVE using `love .`
+4. Run the project with LÖVE from within the root folder with `love .`
 
 ## AI Usage Policy
+
 This project does *not* accept fully AI-generated contributions. AI tools may be used assistively only. As a contributor, you should be able to understand and take responsibility for changes you make to the codebase.
 
 We maintain the same stance on AI usage as p5.js. Please read the [AI Usage Policy](https://github.com/processing/p5.js/blob/main/AI_USAGE_POLICY.md) before proceeding.
 
-In fact, a large portion of this doc is directly inspired from the [p5.js contributor guidlines](https://github.com/processing/p5.js/blob/main/contributor_docs/contributor_guidelines.md).
